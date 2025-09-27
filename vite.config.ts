@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
@@ -17,10 +17,6 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@radix-ui/react-accordion', '@radix-ui/react-alert-dialog'],
-  },
-  define: {
-    global: 'globalThis',
   },
   build: {
     rollupOptions: {
@@ -47,18 +43,15 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@radix-ui')) {
               return 'vendor-radix';
             }
-            if (id.includes('react-router')) {
-              return 'vendor-router';
+            // Keep React, React DOM, and React Router together to prevent internal errors
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
             }
             if (id.includes('@tanstack/react-query')) {
               return 'vendor-react-query';
             }
             if (id.includes('xlsx')) {
               return 'vendor-xlsx';
-            }
-            // Keep React and React-DOM together to avoid conflicts
-            if (id.includes('react') && !id.includes('react-router')) {
-              return 'vendor-react';
             }
             return 'vendor';
           }
