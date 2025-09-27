@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { lazy, Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/loading";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Lazy load page components
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -75,20 +76,22 @@ const router = createBrowserRouter(
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <RouterProvider router={router} future={{ v7_startTransition: true }} />
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <RouterProvider router={router} future={{ v7_startTransition: true }} />
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

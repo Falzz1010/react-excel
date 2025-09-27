@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Eye, EyeOff, User, Lock, Mail } from 'lucide-react';
-import Swal from 'sweetalert2';
+import { showConfirm, showSuccess, showError } from '@/lib/sweetAlert';
 
 export default function Settings() {
   const { user } = useAuth();
@@ -28,40 +28,24 @@ export default function Settings() {
     e.preventDefault();
     
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      await Swal.fire({
-        title: 'Gagal',
-        text: 'Password konfirmasi tidak cocok',
-        icon: 'error',
-        confirmButtonText: 'Mengerti'
-      });
+      await showError('Gagal', 'Password konfirmasi tidak cocok');
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      await Swal.fire({
-        title: 'Gagal',
-        text: 'Password baru harus minimal 6 karakter',
-        icon: 'error',
-        confirmButtonText: 'Mengerti'
-      });
+      await showError('Gagal', 'Password baru harus minimal 6 karakter');
       return;
     }
 
     if (!user?.email) {
-      await Swal.fire({
-        title: 'Gagal',
-        text: 'Email pengguna tidak ditemukan. Silakan masuk ulang.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
+      await showError('Gagal', 'Email pengguna tidak ditemukan. Silakan masuk ulang.');
       return;
     }
 
-    const confirmResult = await Swal.fire({
+    const confirmResult = await showConfirm({
       title: 'Konfirmasi Ubah Password',
       text: 'Apakah Anda yakin ingin mengubah password?',
       icon: 'warning',
-      showCancelButton: true,
       confirmButtonText: 'Ya, ubah',
       cancelButtonText: 'Batal'
     });
@@ -92,12 +76,7 @@ export default function Settings() {
         throw error;
       }
 
-      await Swal.fire({
-        title: 'Berhasil',
-        text: 'Password berhasil diubah',
-        icon: 'success',
-        confirmButtonText: 'Oke'
-      });
+      await showSuccess('Berhasil', 'Password berhasil diubah');
 
       // Reset form
       setPasswordData({
@@ -106,12 +85,7 @@ export default function Settings() {
         confirmPassword: ''
       });
     } catch (error: any) {
-      await Swal.fire({
-        title: 'Gagal',
-        text: error?.message || 'Gagal mengubah password',
-        icon: 'error',
-        confirmButtonText: 'Mengerti'
-      });
+      await showError('Gagal', error?.message || 'Gagal mengubah password');
     } finally {
       setIsLoading(false);
     }

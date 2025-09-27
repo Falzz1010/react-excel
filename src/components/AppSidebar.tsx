@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
-import Swal from 'sweetalert2';
+import { showConfirm, showSuccess, showError } from '@/lib/sweetAlert';
 
 const mainItems = [
   { title: "Dashboard", url: "/", icon: Home },
@@ -31,6 +31,13 @@ export function AppSidebar() {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
 
+  // Function to handle menu item click and close mobile sidebar
+  const handleMenuItemClick = () => {
+    if (isMobile && openMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   const handleSignOut = async () => {
     // On mobile, close the sidebar sheet first to avoid focus trap with SweetAlert
     let reopenOnCancel = false;
@@ -39,11 +46,11 @@ export function AppSidebar() {
       reopenOnCancel = true;
       await new Promise((r) => setTimeout(r, 50));
     }
-    const confirmResult = await Swal.fire({
+    
+    const confirmResult = await showConfirm({
       title: 'Konfirmasi Logout',
       text: 'Apakah Anda yakin ingin keluar dari akun?',
       icon: 'warning',
-      showCancelButton: true,
       confirmButtonText: 'Ya, logout',
       cancelButtonText: 'Batal'
     });
@@ -55,21 +62,10 @@ export function AppSidebar() {
 
     const { error } = await signOut();
     if (error) {
-      await Swal.fire({
-        title: 'Gagal',
-        text: error.message || 'Gagal logout',
-        icon: 'error',
-        confirmButtonText: 'Mengerti'
-      });
+      await showError('Gagal', error.message || 'Gagal logout');
       if (reopenOnCancel) setOpenMobile(true);
     } else {
-      await Swal.fire({
-        title: 'Berhasil',
-        text: 'Anda telah logout',
-        icon: 'success',
-        timer: 1200,
-        showConfirmButton: false
-      });
+      await showSuccess('Berhasil', 'Anda telah logout');
       navigate('/auth', { replace: true });
     }
   };
@@ -104,7 +100,12 @@ export function AppSidebar() {
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end className={getNavCls}>
+                    <NavLink 
+                      to={item.url} 
+                      end 
+                      className={getNavCls}
+                      onClick={handleMenuItemClick}
+                    >
                       <item.icon className="h-4 w-4" />
                       {state === "expanded" && <span>{item.title}</span>}
                     </NavLink>
