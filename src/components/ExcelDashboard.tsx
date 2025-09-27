@@ -108,8 +108,8 @@ export default function ExcelDashboard() {
             <div className="sm:hidden mt-2 sm:mt-3">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button size="sm" variant="outline" className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
+                  <Button size="sm" variant="outline" className="flex items-center gap-1.5 text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 h-8 sm:h-9 w-full">
+                    <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
                     Filters
                   </Button>
                 </SheetTrigger>
@@ -118,9 +118,9 @@ export default function ExcelDashboard() {
                     <SheetTitle>Column Filters</SheetTitle>
                   </SheetHeader>
                   {hasActiveFilters && (
-                    <div className="mt-2 mb-2 flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">{activeFilterCount} filter aktif</Badge>
-                      <Button size="sm" variant="ghost" className="h-7 px-2" onClick={clearAllFilters}>Clear all</Button>
+                    <div className="mt-2 mb-2 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                      <Badge variant="secondary" className="text-[10px] sm:text-xs">{activeFilterCount} filter aktif</Badge>
+                      <Button size="sm" variant="ghost" className="h-7 sm:h-8 px-2 text-[10px] sm:text-xs" onClick={clearAllFilters}>Clear all</Button>
                     </div>
                   )}
                   <div className="mt-1 max-h-[65vh] overflow-y-auto pr-1">

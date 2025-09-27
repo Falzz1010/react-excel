@@ -65,11 +65,11 @@ export function DataTable({
   return (
     <Card className="shadow-xl border-0 overflow-hidden">
       <CardContent className="p-0">
-        <div className="flex items-center justify-end px-3 py-2 border-b">
+        <div className="flex items-center justify-end px-2 sm:px-3 py-1.5 sm:py-2 border-b">
           <Dialog>
             <DialogTrigger asChild>
-              <Button size="sm" variant="outline" className="gap-2">
-                <Maximize2 className="h-4 w-4" />
+              <Button size="sm" variant="outline" className="gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 h-8 sm:h-9">
+                <Maximize2 className="h-3 w-3 sm:h-4 sm:w-4" />
                 Perbesar
               </Button>
             </DialogTrigger>
@@ -173,7 +173,7 @@ export function DataTable({
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm"
+                              className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5"
                               onClick={() => onAddRow?.()}
                             >
                               <Plus className="h-3 w-3 mr-1" />
@@ -297,7 +297,7 @@ export function DataTable({
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm"
+                      className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5"
                       onClick={() => onAddRow?.()}
                     >
                       <Plus className="h-3 w-3 mr-1" />
