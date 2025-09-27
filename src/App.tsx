@@ -5,9 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense, StrictMode } from "react";
 import { LoadingSpinner } from "@/components/ui/loading";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { safeCleanupByClass } from "@/lib/domUtils";
 
 // Lazy load page components
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -16,7 +17,14 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Settings = lazy(() => import("./pages/Settings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const router = createBrowserRouter(
   [
@@ -75,23 +83,35 @@ const router = createBrowserRouter(
   },
 );
 
-const App = () => (
-  <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <RouterProvider router={router} future={{ v7_startTransition: true }} />
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
-  </ErrorBoundary>
-);
+const App = () => {
+  // Cleanup any orphaned DOM elements on app start
+  React.useEffect(() => {
+    // Cleanup common problematic elements
+    safeCleanupByClass('swal2-container');
+    safeCleanupByClass('swal2-backdrop');
+    safeCleanupByClass('swal2-popup');
+  }, []);
+
+  return (
+    <StrictMode>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <RouterProvider router={router} future={{ v7_startTransition: true }} />
+            </TooltipProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </StrictMode>
+  );
+};
 
 export default App;

@@ -97,28 +97,40 @@ class SafeSweetAlert {
   private async cleanup() {
     // Close any existing SweetAlert2 instances
     try {
-      const existingContainer = document.querySelector('.swal2-container');
-      if (existingContainer) {
+      // First, try to close any open dialogs
+      if (Swal.isVisible()) {
         Swal.close();
-        // Wait a bit for cleanup
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
       
-      // Additional mobile-specific cleanup
-      const mobileContainers = document.querySelectorAll('.swal2-container');
-      mobileContainers.forEach(container => {
+      // Force cleanup all SweetAlert2 elements
+      const allSwalElements = document.querySelectorAll('.swal2-container, .swal2-backdrop, .swal2-popup, .swal2-html-container');
+      allSwalElements.forEach(element => {
         try {
-          if (container.parentNode) {
-            container.parentNode.removeChild(container);
+          if (element && element.parentNode) {
+            // Use safe removal
+            element.parentNode.removeChild(element);
           }
         } catch (e) {
-          // Ignore removeChild errors
-          console.warn('SweetAlert2 mobile cleanup warning:', e);
+          // Ignore removeChild errors - they're handled by our global wrapper
+          console.warn('SweetAlert2 cleanup warning (handled):', e);
+        }
+      });
+      
+      // Additional cleanup for any remaining elements
+      const remainingElements = document.querySelectorAll('[class*="swal2"]');
+      remainingElements.forEach(element => {
+        try {
+          if (element && element.parentNode) {
+            element.parentNode.removeChild(element);
+          }
+        } catch (e) {
+          // Ignore - handled by global wrapper
         }
       });
     } catch (e) {
-      // Ignore cleanup errors
-      console.warn('SweetAlert2 cleanup error:', e);
+      // Ignore cleanup errors - they're handled by our global wrapper
+      console.warn('SweetAlert2 cleanup error (handled):', e);
     }
   }
 
