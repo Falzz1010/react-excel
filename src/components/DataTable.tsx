@@ -73,11 +73,11 @@ export function DataTable({
                 Perbesar
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-screen h-screen max-w-none p-0 sm:p-2">
+            <DialogContent className="w-[95vw] h-[95vh] max-w-none p-0 sm:p-2">
               <DialogHeader className="px-3 pt-3">
-                <DialogTitle className="text-base">Tabel</DialogTitle>
+                <DialogTitle className="text-base">Tabel - {displayRows.length} baris</DialogTitle>
               </DialogHeader>
-              <div className="h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] w-full overflow-auto">
+              <div className="h-[calc(100%-56px)] w-full overflow-auto">
                 <div className="min-w-max">
                   <table className="w-full min-w-max">
                     <thead className="bg-gradient-secondary sticky top-0 z-10">
@@ -85,14 +85,14 @@ export function DataTable({
                         {(displayRows[0] || []).map((cell, j) => (
                           <th
                             key={`mh-${j}`}
-                            className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 text-left whitespace-nowrap"
+                            className="px-2 sm:px-3 py-2 sm:py-3 text-[10px] sm:text-sm border-r border-border last:border-r-0 text-left whitespace-nowrap"
                             title={cell?.toString() || ""}
                           >
-                            <div className="min-w-[120px] sm:min-w-[160px]">{cell || ""}</div>
+                            <div className="min-w-[80px] sm:min-w-[120px] md:min-w-[160px]">{cell || ""}</div>
                           </th>
                         ))}
                         {isEditMode && (
-                          <th className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm text-center min-w-[100px]">Actions</th>
+                          <th className="px-2 sm:px-3 py-2 sm:py-3 text-[10px] sm:text-sm text-center min-w-[80px] sm:min-w-[100px]">Actions</th>
                         )}
                       </tr>
                     </thead>
@@ -100,21 +100,21 @@ export function DataTable({
                       {displayRows.slice(1).map((row, i) => (
                         <tr key={`m-${i}`} className="hover:bg-accent/50 border-b border-border transition-smooth">
                           {row.map((cell, j) => (
-                            <td key={`m-${i}-${j}`} className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap">
+                            <td key={`m-${i}-${j}`} className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap">
                               {editingCell?.row === i + 1 && editingCell?.col === j ? (
-                                <div className="min-w-[120px] sm:min-w-[160px] flex items-center gap-1" key={`edit-${i}-${j}`}>
+                                <div className="min-w-[80px] sm:min-w-[120px] md:min-w-[160px] flex items-center gap-1" key={`edit-${i}-${j}`}>
                                   <Input
                                     value={editValue}
                                     onChange={(e) => setEditValue(e.target.value)}
                                     onKeyDown={handleKeyDown}
-                                    className="h-8 text-[11px]"
+                                    className="h-7 sm:h-8 text-[10px] sm:text-[11px]"
                                     autoFocus
                                     aria-label={`Edit cell ${i + 1}, ${j + 1}`}
                                   />
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-7 w-7 p-0 hover:bg-green-100"
+                                    className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-green-100"
                                     onClick={handleCellSave}
                                     type="button"
                                   >
@@ -123,7 +123,7 @@ export function DataTable({
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-7 w-7 p-0 hover:bg-red-100"
+                                    className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-red-100"
                                     onClick={handleCellCancel}
                                     type="button"
                                   >
@@ -132,7 +132,7 @@ export function DataTable({
                                 </div>
                               ) : (
                                 <div
-                                  className="min-w-[120px] sm:min-w-[160px] truncate cursor-pointer hover:bg-accent/30 p-1 rounded"
+                                  className="min-w-[80px] sm:min-w-[120px] md:min-w-[160px] truncate cursor-pointer hover:bg-accent/30 p-1 rounded"
                                   onClick={() => handleCellClick(i + 1, j)}
                                   title={isEditMode ? "Click to edit" : cell?.toString() || ""}
                                 >
@@ -142,12 +142,12 @@ export function DataTable({
                             </td>
                           ))}
                           {isEditMode && (
-                            <td className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm text-center min-w-[100px]">
+                            <td className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm text-center min-w-[80px] sm:min-w-[100px]">
                               <div className="flex items-center justify-center gap-1">
                                 <Button
                                   size="sm"
                                   variant="ghost"
-                                  className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
+                                  className="h-6 w-6 sm:h-7 sm:w-7 p-0 text-green-600 hover:text-green-700"
                                   onClick={() => onAddRow?.(i + 1)}
                                   title="Add row below"
                                 >
@@ -156,7 +156,7 @@ export function DataTable({
                                 <Button
                                   size="sm"
                                   variant="ghost"
-                                  className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                                  className="h-6 w-6 sm:h-7 sm:w-7 p-0 text-red-600 hover:text-red-700"
                                   onClick={() => onDeleteRow?.(i + 1)}
                                   title="Delete row"
                                 >
@@ -169,18 +169,18 @@ export function DataTable({
                       ))}
                       {isEditMode && (
                         <tr className="border-b border-border">
-                          <td colSpan={rows[0]?.length || 0} className="px-2 sm:px-3 py-2 sm:py-3 text-center">
+                          <td colSpan={rows[0]?.length || 0} className="px-1 sm:px-2 py-1 sm:py-2 text-center">
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-green-600 hover:text-green-700"
+                              className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm"
                               onClick={() => onAddRow?.()}
                             >
                               <Plus className="h-3 w-3 mr-1" />
                               Add Row
                             </Button>
                           </td>
-                          <td className="px-2 sm:px-3 py-2 sm:py-3"></td>
+                          <td className="px-1 sm:px-2 py-1 sm:py-2"></td>
                         </tr>
                       )}
                     </tbody>
@@ -204,14 +204,14 @@ export function DataTable({
                 {(displayRows[0] || []).map((cell, j) => (
                   <th
                     key={`h-${j}`}
-                    className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 text-left whitespace-nowrap"
+                    className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm border-r border-border last:border-r-0 text-left whitespace-nowrap"
                     title={cell?.toString() || ""}
                   >
-                    <div className="min-w-[100px] sm:min-w-[140px]">{cell || ""}</div>
+                    <div className="min-w-[60px] sm:min-w-[100px] md:min-w-[140px]">{cell || ""}</div>
                   </th>
                 ))}
                 {isEditMode && (
-                  <th className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm text-center min-w-[90px]">
+                  <th className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm text-center min-w-[60px] sm:min-w-[90px]">
                     Actions
                   </th>
                 )}
@@ -223,22 +223,22 @@ export function DataTable({
                   {row.map((cell, j) => (
                     <td
                       key={j}
-                      className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap"
+                      className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap"
                     >
                       {editingCell?.row === i + 1 && editingCell?.col === j ? (
-                        <div className="min-w-[100px] sm:min-w-[140px] flex items-center gap-1" key={`edit-${i}-${j}`}>
+                        <div className="min-w-[60px] sm:min-w-[100px] md:min-w-[140px] flex items-center gap-1" key={`edit-${i}-${j}`}>
                           <Input
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="h-8 text-[11px]"
+                            className="h-7 sm:h-8 text-[10px] sm:text-[11px]"
                             autoFocus
                             aria-label={`Edit cell ${i + 1}, ${j + 1}`}
                           />
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0 hover:bg-green-100"
+                            className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-green-100"
                             onClick={handleCellSave}
                             type="button"
                           >
@@ -247,7 +247,7 @@ export function DataTable({
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0 hover:bg-red-100"
+                            className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-red-100"
                             onClick={handleCellCancel}
                             type="button"
                           >
@@ -256,7 +256,7 @@ export function DataTable({
                         </div>
                       ) : (
                         <div 
-                          className="min-w-[100px] sm:min-w-[140px] truncate cursor-pointer hover:bg-accent/30 p-1 rounded"
+                          className="min-w-[60px] sm:min-w-[100px] md:min-w-[140px] truncate cursor-pointer hover:bg-accent/30 p-1 rounded"
                           onClick={() => handleCellClick(i + 1, j)}
                           title={isEditMode ? "Click to edit" : cell?.toString() || ""}
                         >
@@ -266,12 +266,12 @@ export function DataTable({
                     </td>
                   ))}
                   {isEditMode && (
-                    <td className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm text-center">
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-[10px] sm:text-sm text-center">
                       <div className="flex items-center justify-center gap-1">
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
+                          className="h-6 w-6 sm:h-7 sm:w-7 p-0 text-green-600 hover:text-green-700"
                           onClick={() => onAddRow?.(i + 1)}
                           title="Add row below"
                         >
@@ -280,7 +280,7 @@ export function DataTable({
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                          className="h-6 w-6 sm:h-7 sm:w-7 p-0 text-red-600 hover:text-red-700"
                           onClick={() => onDeleteRow?.(i + 1)}
                           title="Delete row"
                         >
@@ -293,18 +293,18 @@ export function DataTable({
               ))}
               {isEditMode && (
                 <tr className="border-b border-border">
-                  <td colSpan={rows[0]?.length || 0} className="px-2 sm:px-3 py-2 sm:py-3 text-center">
+                  <td colSpan={rows[0]?.length || 0} className="px-1 sm:px-2 py-1 sm:py-2 text-center">
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-green-600 hover:text-green-700"
+                      className="text-green-600 hover:text-green-700 h-7 sm:h-8 text-[10px] sm:text-sm"
                       onClick={() => onAddRow?.()}
                     >
                       <Plus className="h-3 w-3 mr-1" />
                       Add Row
                     </Button>
                   </td>
-                  <td className="px-2 sm:px-3 py-2 sm:py-3"></td>
+                  <td className="px-1 sm:px-2 py-1 sm:py-2"></td>
                 </tr>
               )}
             </tbody>

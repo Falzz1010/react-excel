@@ -54,7 +54,7 @@ export default function ExcelDashboard() {
   };
 
   return (
-    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-x-hidden">
+    <div className="p-2 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 overflow-x-hidden">
       {/* Header removed */}
 
       {/* Upload Section */}
@@ -67,8 +67,8 @@ export default function ExcelDashboard() {
       {/* Controls */}
       {rows.length > 0 && (
         <Card className="shadow-lg border-0">
-          <CardContent className="pt-6">
-            <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 items-start lg:items-center justify-between">
+          <CardContent className="pt-3 sm:pt-4 md:pt-6">
+            <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 md:gap-4 items-start lg:items-center justify-between">
               <div className="w-full lg:flex-1 min-w-0">
                 <SearchControls
                   searchTerm={searchTerm}
@@ -94,7 +94,7 @@ export default function ExcelDashboard() {
             )}
             
             {/* Edit Controls */}
-            <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center justify-between">
+            <div className="mt-2 sm:mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 items-start sm:items-center justify-between">
               <EditControls
                 isEditMode={isEditMode}
                 hasUnsavedChanges={hasUnsavedChanges}
@@ -105,7 +105,7 @@ export default function ExcelDashboard() {
             </div>
             
             {/* Mobile Filter Button (Sheet) */}
-            <div className="sm:hidden mt-3">
+            <div className="sm:hidden mt-2 sm:mt-3">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button size="sm" variant="outline" className="flex items-center gap-2">
@@ -137,7 +137,7 @@ export default function ExcelDashboard() {
             </div>
 
             {/* Desktop Filters Inline */}
-            <div className="hidden sm:block mt-3 sm:mt-4 overflow-x-auto">
+            <div className="hidden sm:block mt-2 sm:mt-3 md:mt-4 overflow-x-auto">
               <ColumnFilters
                 headers={headers}
                 uniqueValuesByColumn={uniqueValuesByColumn}
