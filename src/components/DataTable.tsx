@@ -42,8 +42,11 @@ export function DataTable({
     if (editingCell && onUpdateCell) {
       onUpdateCell(editingCell.row, editingCell.col, editValue);
     }
-    setEditingCell(null);
-    setEditValue("");
+    // Add small delay to ensure UI updates properly before clearing state
+    setTimeout(() => {
+      setEditingCell(null);
+      setEditValue("");
+    }, 100);
   };
 
   const handleCellCancel = () => {
@@ -99,7 +102,7 @@ export function DataTable({
                           {row.map((cell, j) => (
                             <td key={`m-${i}-${j}`} className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap">
                               {editingCell?.row === i + 1 && editingCell?.col === j ? (
-                                <div className="min-w-[120px] sm:min-w-[160px] flex items-center gap-1">
+                                <div className="min-w-[120px] sm:min-w-[160px] flex items-center gap-1" key={`edit-${i}-${j}`}>
                                   <Input
                                     value={editValue}
                                     onChange={(e) => setEditValue(e.target.value)}
@@ -111,16 +114,18 @@ export function DataTable({
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-7 w-7 p-0"
+                                    className="h-7 w-7 p-0 hover:bg-green-100"
                                     onClick={handleCellSave}
+                                    type="button"
                                   >
                                     <Check className="h-3 w-3" />
                                   </Button>
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-7 w-7 p-0"
+                                    className="h-7 w-7 p-0 hover:bg-red-100"
                                     onClick={handleCellCancel}
+                                    type="button"
                                   >
                                     <X className="h-3 w-3" />
                                   </Button>
@@ -221,7 +226,7 @@ export function DataTable({
                       className="px-2 sm:px-3 py-2 sm:py-3 text-[11px] sm:text-sm border-r border-border last:border-r-0 whitespace-nowrap"
                     >
                       {editingCell?.row === i + 1 && editingCell?.col === j ? (
-                        <div className="min-w-[100px] sm:min-w-[140px] flex items-center gap-1">
+                        <div className="min-w-[100px] sm:min-w-[140px] flex items-center gap-1" key={`edit-${i}-${j}`}>
                           <Input
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
@@ -233,16 +238,18 @@ export function DataTable({
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0"
+                            className="h-7 w-7 p-0 hover:bg-green-100"
                             onClick={handleCellSave}
+                            type="button"
                           >
                             <Check className="h-3 w-3" />
                           </Button>
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0"
+                            className="h-7 w-7 p-0 hover:bg-red-100"
                             onClick={handleCellCancel}
+                            type="button"
                           >
                             <X className="h-3 w-3" />
                           </Button>
