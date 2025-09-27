@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/' : '/',
   server: {
     host: "::",
     port: 8080,
@@ -17,9 +18,12 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@radix-ui/react-accordion', '@radix-ui/react-alert-dialog'],
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         // Ensure proper chunk loading order
@@ -27,39 +31,12 @@ export default defineConfig(({ mode }) => ({
           const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
           return `assets/[name]-[hash].js`;
         },
+        // Prevent hoisting issues
+        hoistTransitiveImports: false,
         manualChunks: (id) => {
-          // Create chunks for major vendor libraries first
+          // Keep everything together to prevent forwardRef and dependency issues
           if (id.includes('node_modules')) {
-            if (id.includes('@radix-ui')) {
-              return 'vendor-radix';
-            }
-            // Keep React, React DOM, and React Router together to prevent internal errors
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
-            if (id.includes('@tanstack/react-query')) {
-              return 'vendor-react-query';
-            }
-            if (id.includes('xlsx')) {
-              return 'vendor-xlsx';
-            }
             return 'vendor';
-          }
-          
-          // Create a chunk for UI components (keep them separate to avoid circular deps)
-          if (id.includes('/src/components/ui/')) {
-            return 'ui-components';
-          }
-          
-          // Create a chunk for non-UI components (keep them separate to avoid circular deps)
-          if (id.includes('/src/components/') && !id.includes('/src/components/ui/')) {
-            return 'components';
-          }
-          
-          // Create a chunk for each page component
-          if (id.includes('/src/pages/')) {
-            const pageName = id.split('/pages/')[1].split('.')[0].toLowerCase();
-            return `page-${pageName}`;
           }
         },
       },
