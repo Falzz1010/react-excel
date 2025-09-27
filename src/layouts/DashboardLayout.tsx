@@ -30,6 +30,11 @@ export function DashboardLayout() {
     day: "2-digit",
     month: "2-digit",
   });
+  const formattedTimeShort = now.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 
   if (loading) {
     return (
@@ -53,31 +58,31 @@ export function DashboardLayout() {
         <AppSidebar />
         
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center justify-between border-b border-border/50 px-4 bg-card/50 backdrop-blur-sm">
-            <div className="flex items-center">
-              <SidebarTrigger className="mr-4" />
+          <header className="h-12 sm:h-14 flex items-center justify-between border-b border-border/50 px-2 sm:px-4 bg-card/50 backdrop-blur-sm">
+            <div className="flex items-center min-w-0">
+              <SidebarTrigger className="mr-2 sm:mr-4 h-8 w-8 sm:h-9 sm:w-9" />
             </div>
             {/* Desktop/Tablet pill */}
             <div className="hidden sm:flex items-center">
-              <div className="flex items-center gap-3 rounded-md border border-border/60 bg-background/60 px-3 py-1.5 shadow-sm">
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <CalendarDays className="h-4 w-4" />
-                  <span className="text-xs sm:text-sm">{formattedDate}</span>
+              <div className="flex items-center gap-2 lg:gap-3 rounded-md border border-border/60 bg-background/60 px-2 lg:px-3 py-1 lg:py-1.5 shadow-sm">
+                <div className="flex items-center gap-1 lg:gap-1.5 text-muted-foreground">
+                  <CalendarDays className="h-3 w-3 lg:h-4 lg:w-4" />
+                  <span className="text-xs lg:text-sm">{formattedDate}</span>
                 </div>
-                <div className="h-4 w-px bg-border/80" />
-                <div className="flex items-center gap-1.5">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span className="font-mono text-sm md:text-base tabular-nums">{formattedTime}</span>
+                <div className="h-3 lg:h-4 w-px bg-border/80" />
+                <div className="flex items-center gap-1 lg:gap-1.5">
+                  <Clock className="h-3 w-3 lg:h-4 lg:w-4 text-primary" />
+                  <span className="font-mono text-xs lg:text-sm xl:text-base tabular-nums">{formattedTime}</span>
                 </div>
               </div>
             </div>
             {/* Mobile compact pill */}
             <div className="sm:hidden flex items-center">
-              <div className="flex items-center gap-2 rounded-md border border-border/60 bg-background/60 px-2.5 py-1 shadow-sm">
-                <Clock className="h-4 w-4 text-primary" />
-                <span className="font-mono text-sm tabular-nums">{formattedTime}</span>
-                <div className="h-3 w-px bg-border/80" />
-                <span className="text-xs text-muted-foreground">{formattedDateShort}</span>
+              <div className="flex items-center gap-1.5 rounded-md border border-border/60 bg-background/60 px-2 py-1 shadow-sm">
+                <Clock className="h-3 w-3 text-primary" />
+                <span className="font-mono text-xs tabular-nums">{formattedTimeShort}</span>
+                <div className="h-2.5 w-px bg-border/80" />
+                <span className="text-[10px] text-muted-foreground">{formattedDateShort}</span>
               </div>
             </div>
           </header>

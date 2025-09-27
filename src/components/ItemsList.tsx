@@ -111,7 +111,7 @@ export function ItemsList({ items, onUpdate, onDelete }: ItemsListProps) {
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Dibuat: {new Date(item.created_at).toLocaleDateString('id-ID')}
             </p>
           </CardContent>
