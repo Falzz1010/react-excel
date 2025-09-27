@@ -60,20 +60,32 @@ export default function Dashboard() {
     const tabletMq = window.matchMedia("(max-width: 1024px)");
     
     const update = () => {
-      setIsTiny(tinyMq.matches);
-      setIsMobile(mobileMq.matches);
-      setIsTablet(tabletMq.matches);
+      try {
+        setIsTiny(tinyMq.matches);
+        setIsMobile(mobileMq.matches);
+        setIsTablet(tabletMq.matches);
+      } catch (error) {
+        console.warn('Error updating viewport state:', error);
+      }
     };
     
-    update();
-    tinyMq.addEventListener?.("change", update);
-    mobileMq.addEventListener?.("change", update);
-    tabletMq.addEventListener?.("change", update);
+    try {
+      update();
+      tinyMq.addEventListener?.("change", update);
+      mobileMq.addEventListener?.("change", update);
+      tabletMq.addEventListener?.("change", update);
+    } catch (error) {
+      console.warn('Error setting up viewport listeners:', error);
+    }
     
     return () => {
-      tinyMq.removeEventListener?.("change", update);
-      mobileMq.removeEventListener?.("change", update);
-      tabletMq.removeEventListener?.("change", update);
+      try {
+        tinyMq.removeEventListener?.("change", update);
+        mobileMq.removeEventListener?.("change", update);
+        tabletMq.removeEventListener?.("change", update);
+      } catch (error) {
+        console.warn('Error cleaning up viewport listeners:', error);
+      }
     };
   }, []);
 

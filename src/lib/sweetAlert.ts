@@ -103,8 +103,22 @@ class SafeSweetAlert {
         // Wait a bit for cleanup
         await new Promise(resolve => setTimeout(resolve, 100));
       }
+      
+      // Additional mobile-specific cleanup
+      const mobileContainers = document.querySelectorAll('.swal2-container');
+      mobileContainers.forEach(container => {
+        try {
+          if (container.parentNode) {
+            container.parentNode.removeChild(container);
+          }
+        } catch (e) {
+          // Ignore removeChild errors
+          console.warn('SweetAlert2 mobile cleanup warning:', e);
+        }
+      });
     } catch (e) {
       // Ignore cleanup errors
+      console.warn('SweetAlert2 cleanup error:', e);
     }
   }
 

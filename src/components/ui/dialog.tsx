@@ -36,6 +36,18 @@ const DialogContent = React.forwardRef<
     (child) => React.isValidElement(child) && child.type === DialogTitle
   );
 
+  // Safe portal rendering with error boundary
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <DialogPortal>
       <DialogOverlay />
