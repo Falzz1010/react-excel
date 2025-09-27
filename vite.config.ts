@@ -17,28 +17,18 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
+    exclude: ['@radix-ui/react-accordion', '@radix-ui/react-alert-dialog'],
   },
   build: {
     rollupOptions: {
       output: {
+        // Ensure proper chunk loading order
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
+          return `assets/[name]-[hash].js`;
+        },
         manualChunks: (id) => {
-          // Create a chunk for each page component
-          if (id.includes('/src/pages/')) {
-            const pageName = id.split('/pages/')[1].split('.')[0].toLowerCase();
-            return `page-${pageName}`;
-          }
-          
-          // Create a chunk for UI components
-          if (id.includes('/src/components/ui/')) {
-            return 'ui-components';
-          }
-          
-          // Create a chunk for non-UI components
-          if (id.includes('/src/components/') && !id.includes('/src/components/ui/')) {
-            return 'components';
-          }
-          
-          // Create chunks for major vendor libraries
+          // Create chunks for major vendor libraries first
           if (id.includes('node_modules')) {
             if (id.includes('@radix-ui')) {
               return 'vendor-radix';
@@ -54,6 +44,22 @@ export default defineConfig(({ mode }) => ({
               return 'vendor-xlsx';
             }
             return 'vendor';
+          }
+          
+          // Create a chunk for UI components (keep them separate to avoid circular deps)
+          if (id.includes('/src/components/ui/')) {
+            return 'ui-components';
+          }
+          
+          // Create a chunk for non-UI components (keep them separate to avoid circular deps)
+          if (id.includes('/src/components/') && !id.includes('/src/components/ui/')) {
+            return 'components';
+          }
+          
+          // Create a chunk for each page component
+          if (id.includes('/src/pages/')) {
+            const pageName = id.split('/pages/')[1].split('.')[0].toLowerCase();
+            return `page-${pageName}`;
           }
         },
       },
